@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111827">
+<title>آل غازي | إدارة عروض التمديدات الكهربائية</title>
+<style>
+:root{
+  --bg:#0b1120;--panel:#121c2e;--panel2:#172338;--line:#293750;
+  --gold:#d9ad57;--gold2:#f1d18c;--text:#f4f6fb;--muted:#a9b4c7;
+  --green:#27ae78;--red:#e15d65;--blue:#4b91e2;--radius:18px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at top,#17253c 0%,var(--bg) 58%);color:var(--text);font-family:Tahoma,Arial,sans-serif;line-height:1.6}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.app{max-width:1100px;margin:auto;padding:18px 14px 45px}
+header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 4px 22px;border-bottom:1px solid var(--line);margin-bottom:20px}
+.brand{display:flex;align-items:center;gap:13px}
+.logo{width:54px;height:54px;border-radius:16px;background:linear-gradient(145deg,var(--gold2),#a9782b);display:grid;place-items:center;color:#172033;font-size:25px;font-weight:900;box-shadow:0 8px 24px #d9ad5730}
+h1{font-size:clamp(19px,4vw,27px);margin:0;color:var(--gold2)}
+.subtitle{color:var(--muted);font-size:12px;margin-top:3px}
+.status{font-size:12px;color:#9ee0c3;white-space:nowrap}
+.card{background:linear-gradient(150deg,#162238,#111a2b);border:1px solid var(--line);border-radius:var(--radius);padding:18px;margin:16px 0;box-shadow:0 12px 30px #0002}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 15px;font-size:17px;color:var(--gold2)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field.full{grid-column:1/-1}
+label{font-size:13px;color:var(--muted)}
+input,select,textarea{width:100%;min-width:0;background:#0c1525;border:1px solid #34445e;color:var(--text);border-radius:11px;padding:11px 12px;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--gold);box-shadow:0 0 0 3px #d9ad571a}
+input::placeholder,textarea::placeholder{color:#718098}
+.toolbar{display:flex;flex-wrap:wrap;gap:9px}
+.btn{border:0;border-radius:11px;padding:10px 15px;font-weight:700;transition:.15s;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.btn:active{transform:scale(.98)}
+.primary{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#172033}
+.secondary{background:#263750;color:#e9eef8;border:1px solid #3a4b66}
+.success{background:#176b50;color:white}
+.danger{background:#632b36;color:#ffe6e8}
+.info{background:#1d4e80;color:white}
+.small{padding:7px 10px;font-size:12px}
+.room{border:1px solid #34445e;border-radius:15px;margin:13px 0;overflow:hidden;background:#0f192a}
+.room-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 13px;background:#1b2a41}
+.room-name{font-weight:700;color:var(--gold2);min-width:0;overflow-wrap:anywhere}
+.room-meta{font-size:11px;color:var(--muted)}
+.room-body{padding:12px}
+.room-controls{display:grid;grid-template-columns:1.2fr 1fr auto;gap:8px;margin-bottom:12px}
+.item-row{display:grid;grid-template-columns:minmax(0,1fr) 95px 42px;gap:8px;margin:8px 0;align-items:center}
+.item-row input{padding:9px 10px}
+.icon-btn{border:1px solid #69404a;background:#492631;color:#ffdce0;border-radius:10px;height:40px;font-size:18px}
+.empty{color:var(--muted);text-align:center;padding:18px 8px;font-size:13px;border:1px dashed #3b4b64;border-radius:12px}
+.summary-list{display:grid;gap:8px}
+.summary-row{display:flex;justify-content:space-between;gap:12px;padding:11px 13px;border:1px solid #30415b;background:#0d1727;border-radius:11px}
+.summary-row strong{color:var(--gold2)}
+.summary-total{margin-top:12px;padding:14px;border-radius:12px;background:#2b261b;border:1px solid #66532f;color:var(--gold2);font-weight:800}
+.note{color:var(--muted);font-size:12px;margin-top:9px}
+.footer-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.footer-actions .btn{width:100%}
+#toast{position:fixed;bottom:20px;left:50%;transform:translate(-50%,20px);opacity:0;pointer-events:none;background:#f3d28f;color:#172033;padding:10px 17px;border-radius:30px;font-size:13px;font-weight:700;z-index:1000;transition:.25s;box-shadow:0 8px 25px #0005}
+#toast.show{opacity:1;transform:translate(-50%,0)}
+.modal-backdrop{position:fixed;inset:0;background:#0009;display:none;place-items:center;padding:16px;z-index:900}
+.modal-backdrop.show{display:grid}
+.modal{width:min(450px,100%);background:#142137;border:1px solid #465873;border-radius:18px;padding:20px}
+.modal h3{margin-top:0;color:var(--gold2)}
+.modal p{color:var(--muted);font-size:13px}
+.modal-actions{display:flex;gap:8px;justify-content:flex-start;margin-top:16px}
+#printArea{display:none}
+@media(max-width:620px){
+ .app{padding:10px 10px 35px}header{align-items:flex-start}.status{font-size:10px}
+ .grid{grid-template-columns:1fr}.field.full{grid-column:auto}
+ .room-controls{grid-template-columns:1fr 1fr}.room-controls button{grid-column:1/-1}
+ .item-row{grid-template-columns:minmax(0,1fr) 75px 39px;gap:6px}
+ .card{padding:14px}.footer-actions{grid-template-columns:1fr 1fr}
+}
+@media print{
+ @page{size:A4;margin:14mm}
+ body{background:#fff!important;color:#111!important;font-family:"Noto Naskh Arabic","Amiri","Tahoma",Arial,sans-serif}
+ #printArea{direction:rtl;text-align:right;line-height:1.75;font-family:"Noto Naskh Arabic","Amiri","Tahoma",Arial,sans-serif}
+ .company-details{border:1.5px solid #b58a3b;background:#fffaf0;padding:10px 12px;margin:10px 0 16px;border-radius:7px;line-height:1.8}
+ .company-details strong{color:#75531c}
+ .company-services{margin:8px 0;padding-right:18px}
+ .company-footer{border-top:1.5px solid #b58a3b;margin-top:20px;padding-top:10px;font-size:9.5pt;line-height:1.8}
+ .print-head .tagline{font-size:12pt;color:#444}
+ .print-info>div{padding:5px;border-bottom:1px solid #ddd}
+ body *{visibility:hidden!important}
+ #printArea,#printArea *{visibility:visible!important}
+ #printArea{display:block!important;position:absolute;inset:0;width:100%;color:#111;background:#fff;font-size:11pt}
+ .print-head{text-align:center;border-bottom:2px solid #b58a3b;padding-bottom:10px;margin-bottom:15px}
+ .print-head h1{color:#75531c;font-size:21pt}
+ .print-info{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+ .print-room{margin:12px 0;break-inside:avoid;border:1px solid #bbb;padding:10px;border-radius:6px}
+ .print-room h3{margin:0 0 8px;color:#75531c}
+ .print-table{width:100%;border-collapse:collapse}
+ .print-table th,.print-table td{border:1px solid #ccc;padding:6px;text-align:right}
+ .print-table th{background:#f1eadc}
+ .print-summary{margin-top:18px;break-inside:avoid}
+ .print-total{font-weight:bold;border:1px solid #b58a3b;padding:10px;margin-top:10px}
+ .print-note{margin-top:20px;color:#555;font-size:9pt}
+}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.2/html2pdf.bundle.min.js" defer></script>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="brand"><div class="logo">⚡</div><div><h1>آل غازي للتمديدات الكهربائية</h1><div class="subtitle">نظام إعداد عروض الأسعار وحصر المواد</div></div></div>
+ <div class="status" id="saveStatus">● حفظ تلقائي</div>
+</header>
+
+<section class="card">
+ <h2 class="section-title">بيانات العميل والمشروع</h2>
+ <div class="grid">
+  <div class="field"><label for="clientName">اسم العميل</label><input id="clientName" placeholder="اسم العميل"></div>
+  <div class="field"><label for="clientPhone">رقم الهاتف</label><input id="clientPhone" type="tel" inputmode="tel" placeholder="رقم التواصل"></div>
+  <div class="field"><label for="projectName">اسم المشروع / الموقع</label><input id="projectName" placeholder="مثال: منزل السيد أحمد"></div>
+  <div class="field"><label for="quoteDate">التاريخ</label><input id="quoteDate" type="date"></div>
+  <div class="field full"><label for="generalNote">ملاحظات عامة</label><textarea id="generalNote" rows="2" placeholder="أي تفاصيل أو شروط إضافية..."></textarea></div>
+ </div>
+</section>
+
+<section class="card">
+ <h2 class="section-title"><span>الأقسام والغرف</span><button class="btn primary small" id="addRoomBtn">＋ إضافة قسم</button></h2>
+ <div id="roomsContainer"></div>
+ <div class="note">أضف كل غرفة أو قسم، ثم أدخل المواد والكميات المطلوبة فيه. سيتم جمع المواد المتشابهة تلقائياً في الملخص.</div>
+</section>
+
+<section class="card">
+ <h2 class="section-title">الملخص الإجمالي للمواد</h2>
+ <div id="summaryContainer" class="summary-list"></div>
+ <div id="summaryEmpty" class="empty">أضف مواد إلى الأقسام ليظهر الملخص هنا.</div>
+ <div id="totalKinds" class="note"></div>
+</section>
+
+<section class="card">
+ <h2 class="section-title">إدارة المشروع والتصدير</h2>
+ <div class="footer-actions">
+  <button class="btn primary" id="pdfBtn">⬇ حفظ PDF واضح</button>
+  <button class="btn secondary" id="printBtn">▤ طباعة A4</button>
+  <button class="btn success" id="whatsappBtn">واتساب ↗</button>
+  <button class="btn secondary" id="exportBtn">حفظ نسخة JSON</button>
+  <button class="btn secondary" id="importBtn">استيراد مشروع</button>
+  <button class="btn danger" id="clearBtn">مسح المشروع</button>
+ </div>
+ <input type="file" id="importFile" accept=".json,application/json" hidden>
+ <div class="note">يُحفظ المشروع تلقائياً على هذا الجهاز والمتصفح. احتفظ بنسخة JSON احتياطية عند الحاجة أو قبل تغيير الجهاز.</div>
+</section>
+</div>
+
+<div id="printArea"></div>
+<div id="toast" role="status" aria-live="polite"></div>
+<div class="modal-backdrop" id="confirmModal">
+ <div class="modal"><h3 id="modalTitle">تأكيد العملية</h3><p id="modalText">هل أنت متأكد؟</p><div class="modal-actions"><button class="btn danger" id="modalConfirm">تأكيد</button><button class="btn secondary" id="modalCancel">إلغاء</button></div></div>
+</div>
+
+<script>
+'use strict';
+const STORAGE_KEY='alghazi_electrical_quote_v3';
+const TYPES=['غرفة نوم','صالون','مطبخ','حمام','ممر','مستودع','درج','خارجي','قسم عام'];
+const $=id=>document.getElementById(id);
+let state={version:3,clientName:'',clientPhone:'',projectName:'',quoteDate:'',generalNote:'',rooms:[]};
+let roomSequence=0,saveTimer=null,confirmAction=null;
+
+function uid(){return 'r'+Date.now().toString(36)+Math.random().toString(36).slice(2,7)}
+function toast(message){const el=$('toast');el.textContent=message;el.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('show'),2600)}
+function safeText(value){return String(value??'')}
+function validType(type){return TYPES.includes(type)?type:'قسم عام'}
+function normalizeName(value){return safeText(value).trim().replace(/\s+/g,' ')}
+function makeRoom(name='قسم جديد',type='قسم عام',items=[{name:'',qty:''}]){return {id:uid(),name,type:validType(type),items:Array.isArray(items)?items.map(i=>({name:safeText(i.name),qty:safeText(i.qty)})):[]}}
+function readForm(){
+ state.clientName=$('clientName').value;state.clientPhone=$('clientPhone').value;
+ state.projectName=$('projectName').value;state.quoteDate=$('quoteDate').value;
+ state.generalNote=$('generalNote').value;
+}
+function persist(){
+ readForm();
+ try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state));$('saveStatus').textContent='● تم الحفظ';$('saveStatus').style.color='#9ee0c3'}
+ catch(e){$('saveStatus').textContent='! تعذر الحفظ';$('saveStatus').style.color='#ffb4b8';toast('تعذر الحفظ المحلي. صدّر نسخة JSON للاحتفاظ بعملك.')}
+}
+function scheduleSave(){ $('saveStatus').textContent='● جارٍ الحفظ...';clearTimeout(saveTimer);saveTimer=setTimeout(persist,250)}
+function restore(){
+ try{
+  const raw=localStorage.getItem(STORAGE_KEY);if(!raw)return false;
+  const parsed=JSON.parse(raw);
+  if(!parsed||!Array.isArray(parsed.rooms))throw new Error('بيانات المشروع غير صالحة');
+  state={version:3,clientName:safeText(parsed.clientName),clientPhone:safeText(parsed.clientPhone),projectName:safeText(parsed.projectName),quoteDate:safeText(parsed.quoteDate),generalNote:safeText(parsed.generalNote),rooms:parsed.rooms.map(r=>({id:safeText(r.id)||uid(),name:safeText(r.name)||'قسم',type:validType(r.type),items:Array.isArray(r.items)?r.items.map(i=>({name:safeText(i.name),qty:safeText(i.qty)})):[]}))};
+  return true;
+ }catch(e){toast('تعذر قراءة الحفظ السابق. لم نحذف البيانات المحفوظة.');return false}
+}
+function renderForm(){['clientName','clientPhone','projectName','quoteDate','generalNote'].forEach(k=>$(k).value=state[k]||'')}
+function renderRooms(){
+ const host=$('roomsContainer');host.replaceChildren();
+ if(!state.rooms.length){const empty=document.createElement('div');empty.className='empty';empty.textContent='لا توجد أقسام بعد. اضغط «إضافة قسم» للبدء.';host.append(empty)}
+ state.rooms.forEach((room,index)=>{
+  const box=document.createElement('article');box.className='room';box.dataset.roomId=room.id;
+  const head=document.createElement('div');head.className='room-head';
+  const left=document.createElement('div');left.style.minWidth='0';
+  const title=document.createElement('div');title.className='room-name';title.textContent=room.name||'قسم بدون اسم';
+  const meta=document.createElement('div');meta.className='room-meta';meta.textContent=`القسم ${index+1} · ${room.items.length} بند`;
+  left.append(title,meta);
+  const del=document.createElement('button');del.className='btn danger small';del.textContent='حذف القسم';del.addEventListener('click',()=>askConfirm('حذف القسم؟','سيتم حذف القسم ومواده من هذا المشروع.',()=>{state.rooms=state.rooms.filter(r=>r.id!==room.id);renderAll();persist()}));
+  head.append(left,del);box.append(head);
+  const body=document.createElement('div');body.className='room-body';
+  const controls=document.createElement('div');controls.className='room-controls';
+  const type=document.createElement('select');type.setAttribute('aria-label','نوع القسم');
+  TYPES.forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;type.append(o)});type.value=room.type;
+  type.addEventListener('change',()=>{room.type=type.value;if(!room.name.trim()||TYPES.includes(room.name))room.name=type.value;renderRooms();scheduleSave()});
+  const name=document.createElement('input');name.placeholder='اسم القسم (يمكن تخصيصه)';name.value=room.name;name.setAttribute('aria-label','اسم القسم');
+  name.addEventListener('input',()=>{room.name=name.value;title.textContent=room.name||'قسم بدون اسم';scheduleSave()});
+  const add=document.createElement('button');add.className='btn secondary';add.textContent='＋ إضافة مادة';add.addEventListener('click',()=>{room.items.push({name:'',qty:''});renderRooms();scheduleSave()});
+  controls.append(type,name,add);body.append(controls);
+  const list=document.createElement('div');
+  if(!room.items.length){const e=document.createElement('div');e.className='empty';e.textContent='لا توجد مواد في هذا القسم.';list.append(e)}
+  room.items.forEach((item,itemIndex)=>{
+   const row=document.createElement('div');row.className='item-row';
+   const material=document.createElement('input');material.placeholder='اسم المادة (مثال: سلك 2.5)';material.value=item.name;material.setAttribute('aria-label','اسم المادة');
+   material.addEventListener('input',()=>{item.name=material.value;scheduleSave();renderSummary()});
+   const qty=document.createElement('input');qty.type='number';qty.min='0';qty.step='1';qty.inputMode='numeric';qty.placeholder='الكمية';qty.value=item.qty;qty.setAttribute('aria-label','الكمية');
+   qty.addEventListener('input',()=>{item.qty=qty.value;scheduleSave();renderSummary()});
+   const remove=document.createElement('button');remove.className='icon-btn';remove.type='button';remove.textContent='×';remove.title='حذف المادة';remove.setAttribute('aria-label','حذف المادة');
+   remove.addEventListener('click',()=>{room.items.splice(itemIndex,1);renderRooms();renderSummary();scheduleSave()});
+   row.append(material,qty,remove);list.append(row);
+  });
+  body.append(list);box.append(body);host.append(box);
+ });
+ renderSummary();
+}
+function getTotals(){
+ const map=new Map();
+ state.rooms.forEach(room=>room.items.forEach(item=>{
+  const name=normalizeName(item.name);const raw=String(item.qty??'').trim();const qty=raw===''?0:Number(raw);
+  if(!name||!Number.isFinite(qty)||qty<=0)return;
+  const key=name.toLocaleLowerCase('ar');const entry=map.get(key)||{name,qty:0};
+  entry.qty+=qty;map.set(key,entry);
+ }));
+ return [...map.values()].sort((a,b)=>a.name.localeCompare(b.name,'ar'));
+}
+function renderSummary(){
+ const host=$('summaryContainer');host.replaceChildren();const totals=getTotals();
+ $('summaryEmpty').style.display=totals.length?'none':'block';
+ totals.forEach(item=>{const row=document.createElement('div');row.className='summary-row';const name=document.createElement('span');name.textContent=item.name;const qty=document.createElement('strong');qty.textContent=Number.isInteger(item.qty)?item.qty:item.qty.toLocaleString('ar');row.append(name,qty);host.append(row)});
+ $('totalKinds').textContent=totals.length?`عدد أنواع المواد: ${totals.length} · مجموع الكميات: ${totals.reduce((s,x)=>s+x.qty,0).toLocaleString('ar')}`:'';
+}
+function renderAll(){renderForm();renderRooms()}
+function addRoom(){state.rooms.push(makeRoom('قسم جديد','قسم عام'));renderRooms();scheduleSave()}
+function askConfirm(title,message,action){$('modalTitle').textContent=title;$('modalText').textContent=message;confirmAction=action;$('confirmModal').classList.add('show')}
+$('modalConfirm').addEventListener('click',()=>{const fn=confirmAction;confirmAction=null;$('confirmModal').classList.remove('show');if(fn)fn()});
+$('modalCancel').addEventListener('click',()=>{$('confirmModal').classList.remove('show');confirmAction=null});
+$('addRoomBtn').addEventListener('click',addRoom);
+['clientName','clientPhone','projectName','quoteDate','generalNote'].forEach(id=>$(id).addEventListener('input',scheduleSave));
+
+function escapeHTML(s){return safeText(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function buildPrintHTML(){
+ readForm();const totals=getTotals();
+ let html=`<div class="print-head"><h1>آل غازي للتمديدات الكهربائية</h1><div class="tagline">حيث تلتقي هندسة الكهرباء بفن الإضاءة</div><div>كشف حصر المواد والأقسام</div></div>`;
+ html+=`<div class="company-details">
+ <div><strong>خدماتنا:</strong> تأسيس كهرباء متكامل (عظم – تسليم مفتاح)، وتصميم وتنفيذ ديكورات الإضاءة الحديثة.</div>
+ <div><strong>التزامنا:</strong> جودة عالية، الالتزام بمعايير السلامة والجودة، تنفيذ دقيق في الوقت المحدد، وأسعار مدروسة وتنافسية.</div>
+ <div><strong>موقعنا:</strong> الرقة – الطبقة</div>
+ <div><strong>الهاتف:</strong> +963 940 834 719 &nbsp; | &nbsp; <strong>البريد:</strong> mmoaid776@gmail.com</div>
+ <div><strong>الإدارة:</strong> غازي محمد الصبيح (أبو مؤيد)</div>
+ </div>`;
+ html+=`<div class="print-info"><div><b>العميل:</b> ${escapeHTML(state.clientName||'—')}</div><div><b>هاتف العميل:</b> ${escapeHTML(state.clientPhone||'—')}</div><div><b>المشروع:</b> ${escapeHTML(state.projectName||'—')}</div><div><b>التاريخ:</b> ${escapeHTML(state.quoteDate||'—')}</div></div>`;
+ state.rooms.forEach((room,i)=>{
+  html+=`<section class="print-room"><h3>${i+1}. ${escapeHTML(room.name)} — ${escapeHTML(room.type)}</h3>`;
+  if(room.items.length){html+='<table class="print-table"><thead><tr><th>المادة</th><th>الكمية</th></tr></thead><tbody>';
+   room.items.forEach(item=>{html+=`<tr><td>${escapeHTML(item.name||'—')}</td><td>${escapeHTML(item.qty||'—')}</td></tr>`});html+='</tbody></table>'}
+  else html+='<div>لا توجد مواد مسجلة.</div>';html+='</section>';
+ });
+ html+='<section class="print-summary"><h3>الملخص الإجمالي للمواد</h3>';
+ if(totals.length){html+='<table class="print-table"><thead><tr><th>المادة</th><th>إجمالي الكمية</th></tr></thead><tbody>';totals.forEach(t=>html+=`<tr><td>${escapeHTML(t.name)}</td><td>${t.qty}</td></tr>`);html+='</tbody></table>'}
+ else html+='<div>لا توجد مواد مسجلة.</div>';
+ if(state.generalNote)html+=`<p><b>ملاحظات المشروع:</b> ${escapeHTML(state.generalNote).replace(/\n/g,'<br>')}</p>`;
+ html+='<div class="company-footer"><strong>آل غازي للتمديدات الكهربائية</strong><br>للاستفسار والتواصل: +963 940 834 719 — mmoaid776@gmail.com<br>الرقة – الطبقة | الإدارة: غازي محمد الصبيح (أبو مؤيد)<br>شكراً لثقتكم بنا.</div></section>';
+ return html;
+}
+function preparePrint(){ $('printArea').innerHTML=buildPrintHTML(); }
+$('printBtn').addEventListener('click',()=>{preparePrint();window.print()});
+
+// نعتمد طباعة المتصفح مباشرةً لحفظ PDF كنص عربي واضح وقابل للتحديد،
+// بدلاً من تحويل الصفحة إلى صورة قد تُضعف تشكيل الحروف العربية.
+function generatePDF(){
+ readForm();if(!state.rooms.length){toast('أضف قسماً واحداً على الأقل أولاً.');return}
+ preparePrint();
+ toast('اختر «حفظ بتنسيق PDF» من نافذة الطباعة للحصول على كتابة عربية واضحة.');
+ setTimeout(()=>window.print(),180);
+}
+$('pdfBtn').addEventListener('click',generatePDF);
+
+function buildWhatsAppText(){
+ readForm();const totals=getTotals();let lines=[
+ '⚡ آل غازي للتمديدات الكهربائية',
+ 'حيث تلتقي هندسة الكهرباء بفن الإضاءة',
+ '━━━━━━━━━━━━━━━━━━',
+ 'خدماتنا: تأسيس كهرباء متكامل (عظم – تسليم مفتاح)، وتصميم وتنفيذ ديكورات الإضاءة الحديثة.',
+ 'نلتزم بمعايير السلامة والجودة، والتنفيذ الدقيق في الوقت المحدد، بأسعار مدروسة وتنافسية.',
+ 'الموقع: الرقة – الطبقة',
+ 'الهاتف: +963 940 834 719',
+ 'البريد الإلكتروني: mmoaid776@gmail.com',
+ 'الإدارة: غازي محمد الصبيح (أبو مؤيد)',
+ '━━━━━━━━━━━━━━━━━━',
+ 'كشف حصر المواد',
+ `العميل: ${state.clientName||'—'}`,
+ `هاتف العميل: ${state.clientPhone||'—'}`,
+ `المشروع: ${state.projectName||'—'}`,
+ `التاريخ: ${state.quoteDate||'—'}`,
+ '',
+ 'تفصيل الأقسام:'
+ ];
+ state.rooms.forEach((r,i)=>{lines.push(`${i+1}) ${r.name} (${r.type})`);r.items.forEach(it=>{if(normalizeName(it.name))lines.push(` • ${normalizeName(it.name)}: ${it.qty||'—'}`)})});
+ lines.push('','الإجمالي المجمع للمواد:');totals.forEach(t=>lines.push(`• ${t.name}: ${t.qty}`));
+ if(state.generalNote)lines.push('','ملاحظات المشروع: '+state.generalNote);
+ lines.push('','شكراً لثقتكم بآل غازي للتمديدات الكهربائية.');
+ return lines.join('\n');
+}
+$('whatsappBtn').addEventListener('click',async()=>{
+ const text=buildWhatsAppText();const url='https://wa.me/?text='+encodeURIComponent(text);
+ try{const win=window.open(url,'_blank','noopener,noreferrer');if(!win)throw new Error('popup blocked');toast('تم تجهيز رسالة واتساب.')}
+ catch(e){try{await navigator.clipboard.writeText(text);toast('تعذر فتح واتساب؛ تم نسخ التقرير.')}catch(_){fallbackCopy(text)}}
+});
+function fallbackCopy(text){
+ const area=document.createElement('textarea');area.value=text;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();
+ try{const ok=document.execCommand('copy');toast(ok?'تم نسخ التقرير.':'تعذر النسخ؛ استخدم تصدير PDF.')}catch(e){toast('تعذر النسخ؛ استخدم تصدير PDF.')}finally{area.remove()}
+}
+$('exportBtn').addEventListener('click',()=>{
+ readForm();const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json;charset=utf-8'});const a=document.createElement('a');const url=URL.createObjectURL(blob);a.href=url;a.download=`مشروع-آل-غازي-${new Date().toISOString().slice(0,10)}.json`;a.click();URL.revokeObjectURL(url);toast('تم تنزيل النسخة الاحتياطية.');
+});
+$('importBtn').addEventListener('click',()=>$('importFile').click());
+$('importFile').addEventListener('change',async e=>{
+ const file=e.target.files?.[0];if(!file)return;
+ try{
+  const parsed=JSON.parse(await file.text());
+  if(!parsed||!Array.isArray(parsed.rooms))throw new Error('ملف غير صالح');
+  askConfirm('استيراد مشروع؟','سيحل المشروع المستورد محل البيانات الحالية. يُفضّل تصدير نسخة احتياطية أولاً.',()=>{
+   state={version:3,clientName:safeText(parsed.clientName),clientPhone:safeText(parsed.clientPhone),projectName:safeText(parsed.projectName),quoteDate:safeText(parsed.quoteDate),generalNote:safeText(parsed.generalNote),rooms:parsed.rooms.map(r=>({id:uid(),name:safeText(r.name)||'قسم',type:validType(r.type),items:Array.isArray(r.items)?r.items.map(i=>({name:safeText(i.name),qty:safeText(i.qty)})):[]}))};
+   renderAll();persist();toast('تم استيراد المشروع بنجاح.');
+  });
+ }catch(err){toast('تعذر استيراد الملف: تأكد أنه نسخة JSON صالحة.')}
+ e.target.value='';
+});
+$('clearBtn').addEventListener('click',()=>askConfirm('مسح المشروع بالكامل؟','سيتم حذف بيانات المشروع الحالية من هذه الصفحة والتخزين المحلي. لا يمكن التراجع عن ذلك.',()=>{
+ state={version:3,clientName:'',clientPhone:'',projectName:'',quoteDate:new Date().toISOString().slice(0,10),generalNote:'',rooms:[]};renderAll();persist();toast('تم بدء مشروع جديد.');
+}));
+window.addEventListener('beforeunload',()=>{clearTimeout(saveTimer);persist()});
+
+if(!restore()){state.quoteDate=new Date().toISOString().slice(0,10);state.rooms=[makeRoom('المدخل','قسم عام'),makeRoom('غرفة نوم','غرفة نوم')]}
+renderAll();
+</script>
+</body>
+</html>
